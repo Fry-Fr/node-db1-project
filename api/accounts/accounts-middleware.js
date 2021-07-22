@@ -3,7 +3,7 @@ const Accounts = require('./accounts-model');
 exports.checkAccountPayload = (req, res, next) => {
   const { name, budget } = req.body;
 
-  if (!name || !budget) {
+  if (!name || !budget && budget === undefined) {
     res.status(400).json({ message: "name and budget are required" })
     return;
   }else if (typeof name !== "string") {
@@ -15,7 +15,7 @@ exports.checkAccountPayload = (req, res, next) => {
   }else if (budget < 0 || budget > 1000000) {
     res.status(400).json({ message: "budget of account is too large or too small" })
     return;
-  }else if (typeof budget !== "number") {
+  }else if (typeof budget !== "number" || budget === NaN) {
     res.status(400).json({ message: "must be a number" })
     return;
   }
